@@ -32,7 +32,7 @@ def multi_train(model_list, epochs, lr_list, X_train, y_train, X_test, y_test):
             loss = criterion(output, y_test.long().to(device))
             val_loss = loss.item()
             predicted = output.data
-            val_correct = (torch.argmax(predicted.cpu(), axis=1) == y_test.cpu()).sum().item()
+            val_correct = (torch.argmax(predicted.cpu(), axis=1) == y_test.long().cpu()).sum().item()
             val_total = y_test.size(0)
 
             print('val_loss: %.03f | val_acc: %.3f'
@@ -50,11 +50,11 @@ def multi_train(model_list, epochs, lr_list, X_train, y_train, X_test, y_test):
             optimizer.step()
             train_loss.append(loss.item())
             predicted = output.data
-            train_correct = (torch.argmax(predicted.cpu(), axis=1) == y_train.cpu()).sum().item()
+            train_correct = (torch.argmax(predicted.cpu(), axis=1) == y_train.long().cpu()).sum().item()
             train_total = y_train.size(0)
             train_acc.append(train_correct / train_total)
 
-        if X_test != None and y_test != None:
+        if X_test is not None and y_test is not None:
             model_eval(model, X_test, y_test)
 
         return train_loss, train_acc
@@ -755,6 +755,6 @@ def Problem3():
 
 
 if __name__ == '__main__':
-    Problem1()
-    Problem2()
+    # Problem1()
+    # Problem2()
     Problem3()
